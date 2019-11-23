@@ -9,49 +9,83 @@ const _memberError = 'activated element is not in member of the group';
 // The store-class
 abstract class _SingleGroupAware<T> with Store {
 	bool multipleAwareness;
-	@observable ObservableList<T> _group;
-	@observable ObservableList<T> _activateds;
-	@computed bool get hasActivatedElements => _activateds.isNotEmpty;
-	@computed int  get activatedElements    => _activateds.length;
+	@observable ObservableList<T> group;
+	@observable ObservableList<T> prevActivated;
+	@observable ObservableList<T> activateds;
+	@computed bool get hasActivatedElements => activateds.isNotEmpty;
+	@computed int  get activatedElements    => activateds.length;
+	@computed ObservableList<T> get property_activations => activateds;
 	
-	bool isActivated(T element) 	=> _activateds.contains(element);
-	void activate(List<T> elements){
+	bool isStateChanged(T element){
+		if (prevActivated.contains(element)){
+			return !isActivated(element);
+		}else{
+			return isActivated(element);
+		}
+	}
+	
+	bool isActivated(T element) 	=> activateds.contains(element);
+	
+	List<T> _inferDisactivated(List<T> elements){
+		if (elements.isEmpty || activateds.isEmpty){
+			return <T>[];
+		}
+		if (elements.every((e) => activateds.contains(e))) {
+		  return <T>[];
+		}
+		final _prev = activateds.toList();
+		final _new  = elements;
+		return _prev.where((p) => !_new.contains(p)).toList();
+	}
+	
+	void _setActivations(List<T> elements){
+		if (!elements.every((e) => activateds.contains(e))){
+			prevActivated.clear();
+			prevActivated.addAll(activateds.toList());
+		}
+		activateds.clear();
+		activateds.addAll(elements);
+	}
+	void setActivations(List<T> elements){
 		if (multipleAwareness){
 			_multiGuard(elements);
-			_activateds.addAll(elements);
+			_setActivations(elements);
 		}else{
 			_singleGuard(elements);
-			_activateds.clear();
-			_activateds.addAll(elements);
+			_setActivations(elements);
 		}
 	}
 	
 	void _singleGuard(List<T> elements){
-		assert(elements.length == 1, _singleError);
-		assert(_group.any((g) => elements.contains(g)), _memberError);
+		assert(elements.length <= 1, _singleError);
+		assert(group.any((g) => elements.contains(g)), _memberError);
 	}
 	
 	void _multiGuard(List<T> elements){
-		assert(_group.any((g) => elements.contains(g)), _memberError);
+		assert(group.any((g) => elements.contains(g)), _memberError);
 	}
 }
+
 
 class SingleGroupAware<T> extends _SingleGroupAware<T> with _$SingleGroupAware<T>{
 	static Map<String, SingleGroupAware> instances = {};
 	final String key;
-	@override final bool multipleAwareness;
-	@override ObservableList<T> _group;
-	@override ObservableList<T> _activateds;
+	@override final bool multipleAwareness; // ignore: overridden_fields
+	@override ObservableList<T> group; // ignore: overridden_fields
+	@override ObservableList<T> activateds; // ignore: overridden_fields
+	@override ObservableList<T> prevActivated; // ignore: overridden_fields
+	
 	
 	SingleGroupAware._({
 		@required List<T> children, @required this.key,
 		this.multipleAwareness = false, List<T> initialSelection
 	}) :
-			_group = ObservableList.of(children),
-			_activateds = ObservableList.of(initialSelection ?? [])
+		group 				= ObservableList.of(children),
+		activateds 	= ObservableList.of(initialSelection ?? []),
+		prevActivated = ObservableList.of([])
 	{
 		if (!multipleAwareness) {
-		  assert(initialSelection.length ==1, _singleError);
+		  assert(activateds.length <= 1, _singleError);
 		}
 	}
 	
@@ -70,4 +104,12 @@ class SingleGroupAware<T> extends _SingleGroupAware<T> with _$SingleGroupAware<T
 		}
 		return instances[T] as SingleGroupAware<T>;
 	}
+}
+
+
+abstract class SingleGroupAwareWidgetSketch<T>{
+//	ObservableList<T>    Function() property_activations;
+//	bool Function(T 		  elements) isActivated;
+//	void Function(List<T> elements) setActivations;
+	SingleGroupAware<T> Function() awareness;
 }
