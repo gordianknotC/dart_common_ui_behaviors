@@ -1,34 +1,57 @@
 import 'package:meta/meta.dart';
 import 'package:mobx/mobx.dart';
-
 part 'singleGroupAware.g.dart';
+
+const _singleError = 'multiple elements is not allowed in single selection mode';
+const _memberError = 'activated element is not in member of the group';
 
 
 // The store-class
 abstract class _SingleGroupAware<T> with Store {
-	@observable ObservableList<T> group;
-	@observable ObservableList<T> activateds;
-	@computed bool get hasActivatedElements => activateds.isNotEmpty;
-	@computed int  get activatedElements    => activateds.length;
-	@computed bool isActivated(T element) 	=> activateds.contains(element);
+	bool multipleAwareness;
+	@observable ObservableList<T> _group;
+	@observable ObservableList<T> _activateds;
+	@computed bool get hasActivatedElements => _activateds.isNotEmpty;
+	@computed int  get activatedElements    => _activateds.length;
+	
+	bool isActivated(T element) 	=> _activateds.contains(element);
+	void activate(List<T> elements){
+		if (multipleAwareness){
+			_multiGuard(elements);
+			_activateds.addAll(elements);
+		}else{
+			_singleGuard(elements);
+			_activateds.clear();
+			_activateds.addAll(elements);
+		}
+	}
+	
+	void _singleGuard(List<T> elements){
+		assert(elements.length == 1, _singleError);
+		assert(_group.any((g) => elements.contains(g)), _memberError);
+	}
+	
+	void _multiGuard(List<T> elements){
+		assert(_group.any((g) => elements.contains(g)), _memberError);
+	}
 }
 
 class SingleGroupAware<T> extends _SingleGroupAware<T> with _$SingleGroupAware<T>{
 	static Map<String, SingleGroupAware> instances = {};
-	final bool multipleAwareness;
 	final String key;
-	@override final ObservableList<T> group;
-	@override final ObservableList<T> activateds;
+	@override final bool multipleAwareness;
+	@override ObservableList<T> _group;
+	@override ObservableList<T> _activateds;
 	
 	SingleGroupAware._({
 		@required List<T> children, @required this.key,
 		this.multipleAwareness = false, List<T> initialSelection
 	}) :
-			group = ObservableList.of(children),
-			activateds = ObservableList.of(initialSelection ?? [])
+			_group = ObservableList.of(children),
+			_activateds = ObservableList.of(initialSelection ?? [])
 	{
 		if (!multipleAwareness) {
-		  assert(initialSelection.length ==1, 'multiple elements is not allowed in single selection mode');
+		  assert(initialSelection.length ==1, _singleError);
 		}
 	}
 	
