@@ -1,0 +1,17 @@
+name: behaviors
+description: A starting point for Dart libraries or applications.
+# version: 1.0.0
+# homepage: https://www.example.com
+# author: gordianknot <gordianknot.app@gmail.com>
+
+environment:
+  sdk: '>=2.5.0 <3.0.0'
+
+dependencies:
+  mobx:  ^0.3.9+3
+
+dev_dependencies:
+  pedantic: 1.8.0+1
+  test: any
+  build_runner: ^1.7.2
+  mobx_codegen:  ^0.3.10+1
