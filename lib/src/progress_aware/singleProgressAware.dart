@@ -1,4 +1,6 @@
 import 'package:mobx/mobx.dart';
+import 'package:meta/meta.dart';
+
 part 'singleProgressAware.g.dart';
 
 
@@ -15,6 +17,9 @@ abstract class _SingleProgressAware<T> with Store {
 }
 
 class SingleProgressAware<T> extends _SingleProgressAware<T> with _$SingleProgressAware<T>{
-	SingleProgressAware();
+	SingleProgressAware({@required double total, double current}){
+		this.total = total;
+		this.current = current;
+	}
 }
 

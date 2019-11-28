@@ -102,7 +102,7 @@ class SingleGroupAware<T> extends _SingleGroupAware<T> with _$SingleGroupAware<T
 					children: children,key: key, multipleAwareness: multipleAwareness, initialSelection: initialSelection
 			);
 		}
-		return instances[T] as SingleGroupAware<T>;
+		return instances[key] as SingleGroupAware<T>;
 	}
 }
 

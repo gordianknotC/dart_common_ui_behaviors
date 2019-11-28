@@ -7,6 +7,7 @@ void main() {
 	group('SingleGroupAwareness tests', () {
 		SingleGroupAware single_awareness;
 		SingleGroupAware multi_awareness;
+		SingleProgressAware pg_awareness;
 		final List<String> data = [
 			'one', 'two', 'three', 'four'
 		];
@@ -15,6 +16,7 @@ void main() {
 			SingleGroupAware.singleton(children: data, key: '#12343125', multipleAwareness: false);
 			single_awareness 	= SingleGroupAware.singleton(children: data, key: '#12345', multipleAwareness: false, initialSelection: ['one']);
 			multi_awareness 	= SingleGroupAware.singleton(children: data, key: '#3333', multipleAwareness: true, initialSelection: ['one', 'two']);
+			pg_awareness = SingleProgressAware(total: 111, current: 0);
 			
 			single_awareness.property_activations;
 			reaction((_) => single_awareness.activateds,
@@ -33,6 +35,9 @@ void main() {
 				expect(single_awareness.isStateChanged('one'), isTrue);
 				expect(single_awareness.isStateChanged('two'), isFalse);
 				expect(single_awareness.isStateChanged('three'), isFalse);
+				
+				pg_awareness.current = 11;
+				expect(pg_awareness.property_progress, 11/111);
 			});
 			
 			test('activate "two", expect previous "one" inactivated and "two" activated', (){
