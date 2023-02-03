@@ -1,5 +1,5 @@
-name: behaviors
-description: A starting point for Dart libraries or applications.
+name: ui_common_behaviors
+description: Common front end ui reactive behaviors implemented on Mobx
 # version: 1.0.0
 # homepage: https://www.example.com
 # author: gordianknot <gordianknot.app@gmail.com>
