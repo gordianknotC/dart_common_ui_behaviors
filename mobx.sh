@@ -1,0 +1,1 @@
+/Users/knot1981/fvm/versions/1.19.0-4.2.pre@dev/bin/cache/dart-sdk/bin/dart pub run build_runner watch --delete-conflicting-outputs

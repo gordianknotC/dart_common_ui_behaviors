@@ -1,6 +1,6 @@
 __outdated not recommended__
 
-滙集一些常用的 reactive 功能，命名以後綴 Aware 作為修飾，reactive 的部份目前以 mobx 實作
+滙集一些常用的 reactive 功能，命名以後綴 Aware 作為修飾，reactive 的部份目前以 mobx 實作, dart 版本太舊，待更新 
 - scrollAware
 - progressAware
 - pickedAware

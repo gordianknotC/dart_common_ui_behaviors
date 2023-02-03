@@ -8,10 +8,10 @@ environment:
   sdk: '>=2.5.0 <3.0.0'
 
 dependencies:
-  mobx:  ^0.3.9+3
+  mobx: 1.2.1+4
 
 dev_dependencies:
   pedantic: 1.8.0+1
-  test: any
-  build_runner: ^1.7.2
-  mobx_codegen:  ^0.3.10+1
+  test: ^1.6.3
+  build_runner: ^1.3.1
+  mobx_codegen: 1.1.2
