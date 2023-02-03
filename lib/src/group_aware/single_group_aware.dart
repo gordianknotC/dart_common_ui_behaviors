@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:mobx/mobx.dart';
-part 'singleGroupAware.g.dart';
+part 'single_group_aware.g.dart';
 
 const _singleError = 'multiple elements is not allowed in single selection mode';
 const _memberError = 'activated element is not in member of the group';
@@ -26,6 +26,7 @@ abstract class _SingleGroupAware<T> with Store {
 	
 	bool isActivated(T element) 	=> activateds.contains(element);
 	
+// ignore: unused_element
 	List<T> _inferDisactivated(List<T> elements){
 		if (elements.isEmpty || activateds.isEmpty){
 			return <T>[];

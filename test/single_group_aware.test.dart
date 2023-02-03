@@ -1,5 +1,5 @@
 import 'package:behaviors/behaviors.dart';
-import 'package:behaviors/src/group_aware/singleGroupAware.dart';
+import 'package:behaviors/src/group_aware/single_group_aware.dart';
 import 'package:mobx/mobx.dart';
 import 'package:test/test.dart';
 
@@ -37,7 +37,7 @@ void main() {
 				expect(single_awareness.isStateChanged('three'), isFalse);
 				
 				pg_awareness.current = 11;
-				expect(pg_awareness.property_progress, 11/111);
+				expect(pg_awareness.progress, 11/111);
 			});
 			
 			test('activate "two", expect previous "one" inactivated and "two" activated', (){

@@ -1,62 +1,38 @@
-__outdated not recommended__
+import 'package:mobx/mobx.dart';
 
-滙集一些常用的 reactive 功能，命名以後綴 Aware 作為修飾，reactive 的部份目前以 mobx 實作
-- scrollAware
-- progressAware
-- pickedAware
-- groupAware
+// Include generated file
+part 'picked_aware.g.dart';
 
-### ScrollAccAware
-偵測 ScrollController 變化
-```dart
-class ScrollControllerImpl implements ScrollControllerSketch{
-  final ScrollController controller;
-  @override double get offset => controller.offset;
-	ScrollControllerImpl(this.controller);
-}
-class AppGeneralLayout {
-  static final ScrollController scrollController = ScrollController()
-    ..addListener(() {
-      AppGeneralLayout.scrollAwareness.onScroll();
-      _D.debug("onscroll, offset: ${scrollAwareness.offset}/${AppGeneralLayout.scrollController
-          .offset}");
-    });
-  static final ScrollAccAware scrollAwareness = ScrollAccAware(
-      appBarHeight, ScrollControllerImpl(AppGeneralLayout.scrollController));
-}
-/// 這時 AppGeneralLayout.scrollAwareness 便可作為 reactive 物件使用
-/// 用來偵測 AppGeneralLayout.scrollController 的變化
-```
+/*
+*
+* 				R E A C T     S T A T E M A N A G E R ..
+*
+*
+* */
 
-### SingleProgressAware
-偵測 Progress 變化
-```dart
-///
-/// [total] 資料總長度
-/// [current] 當前長度
-/// [isStarted] 是否開始
-/// [isFinished] 是否結束
-/// [progress] progress 0~1
-/// 
-class SingleProgressAware<T> extends _SingleProgressAware<T> with _$SingleProgressAware<T>{
-	SingleProgressAware({@required double total, double current}){
-		this.total = total;
-		this.current = current;
+class PickedAware<T> extends _PickedAware<T> with _$PickableAware<T>{
+	static Map<Type, PickedAware> instances = {};
+	
+	PickedAware();
+	
+	factory PickedAware.F(T element){
+		instances ??= {};
+		if (!(instances?.containsKey(T) ?? false)) {
+		  return instances[T] = PickedAware<T>();
+		}
+		return instances[T] as PickedAware<T>;
 	}
 }
-```
 
-### PickedAware
-#### Usage
-```dart
-Thumbnail thumb;
-final pickable = PickedAware.F(element);
-pickable.picked.add(thumb);
-pickable.picked.remove(thumb);
-picable.hasPickedUp;
-```
-#### 應用，偵測可否儲存
-```dart
+
+// The store-class
+abstract class _PickedAware<T> with Store {
+	@observable ObservableList<T> picked = ObservableList.of([]);
+	@computed bool get hasPickedUp => picked.isNotEmpty;
+	@computed int  get pickedElements => picked.length;
+}
+
+
 class SavedAwareOnPickedDetection {
 	PickedAware<bool> assignedOrNot;
 	PickedAware<bool> savedOrNot;
@@ -118,5 +94,4 @@ class SavedAwareOnPickedDetection {
 	}
 }
 
-```
-## Usage
+
