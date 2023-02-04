@@ -1,13 +1,13 @@
-import 'package:behaviors/behaviors.dart';
-import 'package:behaviors/src/group_aware/single_group_aware.dart';
 import 'package:mobx/mobx.dart';
 import 'package:test/test.dart';
+import 'package:ui_common_behaviors/ui_common_behaviors.dart';
+
 
 void main() {
 	group('SingleGroupAwareness tests', () {
-		SingleGroupAware single_awareness;
-		SingleGroupAware multi_awareness;
-		SingleProgressAware pg_awareness;
+		late SingleGroupAware single_awareness;
+		late SingleGroupAware multi_awareness;
+		late SingleProgressAware pg_awareness;
 		final List<String> data = [
 			'one', 'two', 'three', 'four'
 		];

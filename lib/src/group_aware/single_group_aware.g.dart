@@ -6,77 +6,89 @@ part of 'single_group_aware.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$SingleGroupAware<T> on _SingleGroupAware<T>, Store {
-  Computed<bool> _$hasActivatedElementsComputed;
+  Computed<bool>? _$hasActivatedElementsComputed;
 
   @override
   bool get hasActivatedElements => (_$hasActivatedElementsComputed ??=
-          Computed<bool>(() => super.hasActivatedElements))
+          Computed<bool>(() => super.hasActivatedElements,
+              name: '_SingleGroupAware.hasActivatedElements'))
       .value;
-  Computed<int> _$activatedElementsComputed;
+  Computed<int>? _$activatedElementsComputed;
 
   @override
-  int get activatedElements => (_$activatedElementsComputed ??=
-          Computed<int>(() => super.activatedElements))
+  int get activatedElements => (_$activatedElementsComputed ??= Computed<int>(
+          () => super.activatedElements,
+          name: '_SingleGroupAware.activatedElements'))
       .value;
-  Computed<ObservableList<T>> _$property_activationsComputed;
+  Computed<ObservableList<T>>? _$property_activationsComputed;
 
   @override
   ObservableList<T> get property_activations =>
-      (_$property_activationsComputed ??=
-              Computed<ObservableList<T>>(() => super.property_activations))
+      (_$property_activationsComputed ??= Computed<ObservableList<T>>(
+              () => super.property_activations,
+              name: '_SingleGroupAware.property_activations'))
           .value;
 
-  final _$groupAtom = Atom(name: '_SingleGroupAware.group');
+  late final _$groupAtom =
+      Atom(name: '_SingleGroupAware.group', context: context);
 
   @override
   ObservableList<T> get group {
-    _$groupAtom.context.enforceReadPolicy(_$groupAtom);
-    _$groupAtom.reportObserved();
+    _$groupAtom.reportRead();
     return super.group;
   }
 
   @override
   set group(ObservableList<T> value) {
-    _$groupAtom.context.conditionallyRunInAction(() {
+    _$groupAtom.reportWrite(value, super.group, () {
       super.group = value;
-      _$groupAtom.reportChanged();
-    }, _$groupAtom, name: '${_$groupAtom.name}_set');
+    });
   }
 
-  final _$prevActivatedAtom = Atom(name: '_SingleGroupAware.prevActivated');
+  late final _$prevActivatedAtom =
+      Atom(name: '_SingleGroupAware.prevActivated', context: context);
 
   @override
   ObservableList<T> get prevActivated {
-    _$prevActivatedAtom.context.enforceReadPolicy(_$prevActivatedAtom);
-    _$prevActivatedAtom.reportObserved();
+    _$prevActivatedAtom.reportRead();
     return super.prevActivated;
   }
 
   @override
   set prevActivated(ObservableList<T> value) {
-    _$prevActivatedAtom.context.conditionallyRunInAction(() {
+    _$prevActivatedAtom.reportWrite(value, super.prevActivated, () {
       super.prevActivated = value;
-      _$prevActivatedAtom.reportChanged();
-    }, _$prevActivatedAtom, name: '${_$prevActivatedAtom.name}_set');
+    });
   }
 
-  final _$activatedsAtom = Atom(name: '_SingleGroupAware.activateds');
+  late final _$activatedsAtom =
+      Atom(name: '_SingleGroupAware.activateds', context: context);
 
   @override
   ObservableList<T> get activateds {
-    _$activatedsAtom.context.enforceReadPolicy(_$activatedsAtom);
-    _$activatedsAtom.reportObserved();
+    _$activatedsAtom.reportRead();
     return super.activateds;
   }
 
   @override
   set activateds(ObservableList<T> value) {
-    _$activatedsAtom.context.conditionallyRunInAction(() {
+    _$activatedsAtom.reportWrite(value, super.activateds, () {
       super.activateds = value;
-      _$activatedsAtom.reportChanged();
-    }, _$activatedsAtom, name: '${_$activatedsAtom.name}_set');
+    });
+  }
+
+  @override
+  String toString() {
+    return '''
+group: ${group},
+prevActivated: ${prevActivated},
+activateds: ${activateds},
+hasActivatedElements: ${hasActivatedElements},
+activatedElements: ${activatedElements},
+property_activations: ${property_activations}
+    ''';
   }
 }

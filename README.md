@@ -5,6 +5,9 @@ __outdated not recommended__
 - progressAware
 - pickedAware
 - groupAware
+- schedulers
+- debouncer
+- notifiers
 
 ### ScrollAccAware
 偵測 ScrollController 變化
@@ -119,4 +122,6 @@ class SavedAwareOnPickedDetection {
 }
 
 ```
-## Usage
+
+
+

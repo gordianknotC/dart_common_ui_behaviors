@@ -1,19 +1,18 @@
 import 'package:mobx/mobx.dart';
-import 'package:meta/meta.dart';
 
 part 'single_progress_aware.g.dart';
 
 
 
 abstract class _SingleProgressAware<T> with Store {
-	@observable double total;
-	@observable double current;
+	@observable double? total;
+	@observable double? current;
 	
 	@computed bool get isInitialized 	=> total != null;
 	@computed bool get isStarted 			=> current != null;
-	@computed bool get isFinished 		=> current >= total;
+	@computed bool get isFinished 		=> (current ?? 0) >= (total ?? 1);
 	
-	@computed double get progress => current / total;
+	@computed double get progress => (current ?? 0) / (total ?? 1);
 }
 
 ///
@@ -24,7 +23,10 @@ abstract class _SingleProgressAware<T> with Store {
 /// [progress] progress 0~1
 ///
 class SingleProgressAware<T> extends _SingleProgressAware<T> with _$SingleProgressAware<T>{
-	SingleProgressAware({@required double total, double current}){
+	SingleProgressAware({
+		required double total,
+		required double current
+	}){
 		this.total = total;
 		this.current = current;
 	}

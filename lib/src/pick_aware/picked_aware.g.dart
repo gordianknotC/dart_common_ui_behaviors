@@ -6,35 +6,45 @@ part of 'picked_aware.dart';
 // StoreGenerator
 // **************************************************************************
 
-// ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
+// ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$PickableAware<T> on _PickedAware<T>, Store {
-  Computed<bool> _$hasPickedUpComputed;
+mixin _$PickedAware<T> on _PickedAware<T>, Store {
+  Computed<bool>? _$hasPickedUpComputed;
 
   @override
   bool get hasPickedUp =>
-      (_$hasPickedUpComputed ??= Computed<bool>(() => super.hasPickedUp)).value;
-  Computed<int> _$pickedElementsComputed;
+      (_$hasPickedUpComputed ??= Computed<bool>(() => super.hasPickedUp,
+              name: '_PickedAware.hasPickedUp'))
+          .value;
+  Computed<int>? _$pickedElementsComputed;
 
   @override
   int get pickedElements =>
-      (_$pickedElementsComputed ??= Computed<int>(() => super.pickedElements))
+      (_$pickedElementsComputed ??= Computed<int>(() => super.pickedElements,
+              name: '_PickedAware.pickedElements'))
           .value;
 
-  final _$pickedAtom = Atom(name: '_PickableReact.picked');
+  late final _$pickedAtom = Atom(name: '_PickedAware.picked', context: context);
 
   @override
   ObservableList<T> get picked {
-    _$pickedAtom.context.enforceReadPolicy(_$pickedAtom);
-    _$pickedAtom.reportObserved();
+    _$pickedAtom.reportRead();
     return super.picked;
   }
 
   @override
   set picked(ObservableList<T> value) {
-    _$pickedAtom.context.conditionallyRunInAction(() {
+    _$pickedAtom.reportWrite(value, super.picked, () {
       super.picked = value;
-      _$pickedAtom.reportChanged();
-    }, _$pickedAtom, name: '${_$pickedAtom.name}_set');
+    });
+  }
+
+  @override
+  String toString() {
+    return '''
+picked: ${picked},
+hasPickedUp: ${hasPickedUp},
+pickedElements: ${pickedElements}
+    ''';
   }
 }

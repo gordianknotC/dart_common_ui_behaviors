@@ -10,14 +10,13 @@ part 'picked_aware.g.dart';
 *
 * */
 
-class PickedAware<T> extends _PickedAware<T> with _$PickableAware<T>{
+class PickedAware<T> extends _PickedAware<T> with _$PickedAware<T>{
 	static Map<Type, PickedAware> instances = {};
 	
 	PickedAware();
 	
 	factory PickedAware.F(T element){
-		instances ??= {};
-		if (!(instances?.containsKey(T) ?? false)) {
+		if (!(instances.containsKey(T) ?? false)) {
 		  return instances[T] = PickedAware<T>();
 		}
 		return instances[T] as PickedAware<T>;
@@ -36,17 +35,19 @@ abstract class _PickedAware<T> with Store {
 class SavedAwareOnPickedDetection {
 	PickedAware<bool> assignedOrNot;
 	PickedAware<bool> savedOrNot;
-	PickedAware<bool> modifiedOrNot;
 	PickedAware<bool> uploadedOrNot;
+	late PickedAware<bool> modifiedOrNot;
 	// ---------------------------------------
-	Computed<bool> canShowContent;
-	Computed<bool> canShowDefects;
-	Computed<bool> canSave 			 ;
-	Computed<bool> saved   			 ;
-	Computed<bool> canUpload 		 ;
-	Computed<bool> modified 		 ;
+	late Computed<bool> canShowContent;
+	late Computed<bool> canShowDefects;
+	late Computed<bool> canSave 			 ;
+	late Computed<bool> saved   			 ;
+	late Computed<bool> canUpload 		 ;
+	late Computed<bool> modified 		 ;
 	// ---------------------------------------
-	SavedAwareOnPickedDetection (this.assignedOrNot, this.savedOrNot, this.uploadedOrNot){
+	SavedAwareOnPickedDetection (
+			this.assignedOrNot, this.savedOrNot, this.uploadedOrNot
+	) {
 		canShowContent = Computed(_canShowContent);
 		canShowDefects = Computed(_canShowDefects);
 		canSave 			 = Computed(_canSave);

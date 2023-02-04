@@ -8,10 +8,10 @@ const _memberError = 'activated element is not in member of the group';
 
 // The store-class
 abstract class _SingleGroupAware<T> with Store {
-	bool multipleAwareness;
-	@observable ObservableList<T> group;
-	@observable ObservableList<T> prevActivated;
-	@observable ObservableList<T> activateds;
+	late bool multipleAwareness;
+	@observable late ObservableList<T> group;
+	@observable late ObservableList<T> prevActivated;
+	@observable late ObservableList<T> activateds;
 	@computed bool get hasActivatedElements => activateds.isNotEmpty;
 	@computed int  get activatedElements    => activateds.length;
 	@computed ObservableList<T> get property_activations => activateds;
@@ -70,7 +70,7 @@ abstract class _SingleGroupAware<T> with Store {
 
 class SingleGroupAware<T> extends _SingleGroupAware<T> with _$SingleGroupAware<T>{
 	static Map<String, SingleGroupAware> instances = {};
-	final String key;
+	final String? key;
 	@override final bool multipleAwareness; // ignore: overridden_fields
 	@override ObservableList<T> group; // ignore: overridden_fields
 	@override ObservableList<T> activateds; // ignore: overridden_fields
@@ -78,8 +78,10 @@ class SingleGroupAware<T> extends _SingleGroupAware<T> with _$SingleGroupAware<T
 	
 	
 	SingleGroupAware._({
-		@required List<T> children, @required this.key,
-		this.multipleAwareness = false, List<T> initialSelection
+		required List<T> children,
+		this.key,
+		this.multipleAwareness = false,
+		List<T>? initialSelection
 	}) :
 		group 				= ObservableList.of(children),
 		activateds 	= ObservableList.of(initialSelection ?? []),
@@ -92,13 +94,15 @@ class SingleGroupAware<T> extends _SingleGroupAware<T> with _$SingleGroupAware<T
 	
 	
 	factory SingleGroupAware.singleton({
-		@required List<T> children, String key,
-		bool multipleAwareness = false, List<T> initialSelection
+		required List<T> children,
+		String? key,
+		bool multipleAwareness = false,
+		List<T>? initialSelection
 	}){
 		if (key == null) {
 		  return SingleGroupAware._(children: children,key: key, multipleAwareness: multipleAwareness, initialSelection: initialSelection);
 		}
-		if (!(instances?.containsKey(key) ?? false)) {
+		if (!(instances.containsKey(key) ?? false)) {
 			return instances[key] = SingleGroupAware<T>._(
 					children: children,key: key, multipleAwareness: multipleAwareness, initialSelection: initialSelection
 			);
@@ -112,5 +116,5 @@ abstract class SingleGroupAwareWidgetSketch<T>{
 //	ObservableList<T>    Function() property_activations;
 //	bool Function(T 		  elements) isActivated;
 //	void Function(List<T> elements) setActivations;
-	SingleGroupAware<T> Function() awareness;
+	late SingleGroupAware<T> Function() awareness;
 }
