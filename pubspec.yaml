@@ -1,5 +1,6 @@
 name: ui_common_behaviors
 repository: https://github.com/gordianknotC/dart_common_ui_behaviors.git
+publish_to: none
 description: Common front end ui reactive behaviors implemented on Mobx
 # version: 1.0.0
 # homepage: https://www.example.com

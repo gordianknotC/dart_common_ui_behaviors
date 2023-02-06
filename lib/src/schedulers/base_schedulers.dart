@@ -2,8 +2,7 @@
 import 'dart:async';
 
 
-
-/// tested: test/scheduleTask.dart
+/// tested: test/schedule_task.test.dart
 class ScheduledResult<T>{
 	final String tagName;
 	final Future<T> result;
@@ -11,7 +10,7 @@ class ScheduledResult<T>{
 	ScheduledResult({required this.tagName, required this.idx, required this.result});
 }
 
-/// tested: test/scheduleTask.dart
+/// tested: test/schedule_task.test.dart
 class ScheduledTask<T>{
 	final String tagName;
 	final T Function() action;
@@ -29,7 +28,7 @@ class ScheduledTask<T>{
 
 	ScheduledTask({required this.tagName, required this.interval, required this.action}): completer = Completer<T>(), _schedules = [];
 
-	void setIdx(List<ScheduledTask> schedules){
+	void setSchedules(List<ScheduledTask> schedules){
 		_schedules = schedules;
 	}
 
@@ -99,21 +98,22 @@ class ScheduledTask<T>{
 	}
 }
 
+
+///  說明
+///  -----------------------
+///  	指定處理list內單筆資料的間隔時間，以簡易達成分散式處理
+/// 	如一次載入 30 筆影像，若載入一筆影像需要20ms, 則30筆就需要 600 ms
+///   UI可能會頓個半秒，[ScheduledFutureList] 可指定每隔 30 ms 載入一個
+///
+///   若單筆資料太大，如存取大檔案所造成的延遲，請另開一個CPU線程
+///   [ScheduledFutureList] 無法處理這一類負載過大的問題
 ///
 ///  主要用於分散式處理 （非多線程）
 ///  因使用 CPU 線程會需要額外的操作（自建獨立環境 isolate)，
 ///  當同時處理太多小資料，使CPU load time 太重高
 ///  這時就可以用 [ScheduledFutureList]
 ///
-///  若單筆資料太大，如存取大檔案所造成的延遲，請另開一個CPU線程
-///  [ScheduledFutureList] 無法處理這一類負載過大的問題
-///
-///  說明
-///  	指定處理list內單筆資料的間隔時間，來達簡易達成分散式處理
-/// 	如一次載入 30 筆影像，若載入一筆影像需要20ms, 則30筆就需要 600 ms
-///   UI可能會頓個半秒，[ScheduledFutureList] 可指定每隔 30 ms 載入一個
-///
-/// tested: test/scheduleTask.dart
+/// tested: test/schedule_task.test.dart
 class ScheduledFutureList{
 	static ScheduledFutureList? instance;
 	final Map<String, List<ScheduledTask>> _tasks = {};
@@ -126,7 +126,7 @@ class ScheduledFutureList{
 	ScheduledResult<T> addSchedule<T>(ScheduledTask<T> task){
 		_tasks[task.tagName] ??= <ScheduledTask<T>>[];
 		_tasks[task.tagName]!.add(task);
-		task.setIdx(_tasks[task.tagName]!);
+		task.setSchedules(_tasks[task.tagName]!);
 		return task._processSchedule();
 	}
 

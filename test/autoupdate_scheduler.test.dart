@@ -63,22 +63,6 @@ void main() {
 			expect(futureData, isNot(equals(prevFuture)));
 			expect(scheduler.isRunning, isTrue);
 			expect(scheduler.isRunning, isTrue);
-			
-		});
-		
-		
-		test('常用判斷', (){
-			expect(1, equals(1));
-			expect(1, isNot(equals(2)));
-			expect(true, isTrue);
-			expect(false, isFalse);
-			expect(1, lessThan(2));
-			expect(2, greaterThanOrEqualTo(2));
-			expect([1, 2], unorderedEquals([2, 1]));
-			expect([1, 2], orderedEquals([1,2]));
-			expect('hello', contains('hello'));
-			expect([0, 'hello', 1, 'world'], containsAllInOrder(['hello', 'world']));
-			expect(() => throw Exception(), throwsException);
 		});
 	});
 }

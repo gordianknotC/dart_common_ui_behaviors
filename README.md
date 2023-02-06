@@ -9,6 +9,10 @@ __outdated not recommended__
 - debouncer
 - notifiers
 
+## todos
+- [V] 更新 dart sdk
+- [ ] 更新單元測試
+
 ### ScrollAccAware
 偵測 ScrollController 變化
 ```dart
@@ -121,6 +125,107 @@ class SavedAwareOnPickedDetection {
 	}
 }
 
+```
+
+### AutoUpdateScheduler
+```
+[canPerformFutureAction] 判斷是否可執行 fetch
+    |
+    V
+[futureAction]           fetch 實作
+    |
+    V
+[canUpdate]              是否可 update
+    |
+    V
+[updateAction]           update 實作
+    |
+    V
+[updateNotifier]				 通知相應組件進行 update
+                         可使用 [updateNotifier.addListener]
+                         或 [ValueListenableBuilder] 接收相應事件
+
+ [AutoUpdateScheduler]
+ 使用 Debouncer，意思是無論 schedule 幾次
+ 只要在 schedulePeriod 內都只會執行一次 （第一次的 schedule）
+```
+> source
+```dart
+class AutoUpdateScheduler {
+  /// [canUpdate]
+  /// 用於判斷是否可 update, 若 true, 執行 [updateAction]
+  ///
+  /// [canPerformFutureAction]
+  /// 用於判斷是否可 futureAction, 若 true, 執行 [futureAction]
+  ///
+  /// [futureAction]
+  /// 非同步 action, 如 fetch 一類
+  ///
+  /// [_autoRefreshDeBouncer]
+  /// schedule update 用的 debouncer
+  ///
+  /// [_isRunning]
+  /// 判斷是否有正在執行中的 schedule
+  ///
+}
+```
+
+#### Example
+```dart
+final scheduler = AutoUpdateScheduler(
+    canUpdate: () => canUpdate,
+    canPerformFutureAction: () => canPerform,
+    futureAction: () {
+        futureData = rnd.nextInt(10000);
+        return Future.value(futureData);
+    },
+    updateAction: () {
+        updateData = futureData;
+        print('update action $updateData');
+    },
+    schedulePeriod: 1000,
+);
+scheduler.scheduleUpdate()
+```
+
+### ScheduledFutureList
+```
+///  說明
+///  -----------------------
+///  	指定處理list內單筆資料的間隔時間，以簡易達成分散式處理
+/// 	如一次載入 30 筆影像，若載入一筆影像需要20ms, 則30筆就需要 600 ms
+///     UI可能會頓個半秒，[ScheduledFutureList] 可指定每隔 30 ms 載入一個
+///
+///   若單筆資料太大，如存取大檔案所造成的延遲，請另開一個CPU線程
+///   [ScheduledFutureList] 無法處理這一類負載過大的問題
+///
+///  主要用於分散式處理 （非多線程）
+///  因使用 CPU 線程會需要額外的操作（自建獨立環境 isolate)，
+///  當同時處理太多小資料，使CPU load time 太重高
+///  這時就可以用 [ScheduledFutureList]
+///  
+```
+
+> source
+```dart
+class ScheduledResult<T>{
+  final String tagName;
+  final Future<T> result;
+  final int idx;
+  ScheduledResult({required this.tagName, required this.idx, required this.result});
+}
+class ScheduleFutureList {
+  ScheduledResult<T> addSchedule<T>(ScheduledTask<T> task){  }
+}
+```
+
+#### Example
+```dart
+final futureList = ScheduledFutureList.singleton();
+final task1 = ScheduledTask<T>(tagName: tagname, interval: interval, action: action);
+final task2 = ScheduledTask<T>(tagName: tagname, interval: interval, action: action);
+final scheduledResult1 = futureList.addSchedule(task1);
+final scheduledResult2 = futureList.addSchedule(task2);
 ```
 
 
