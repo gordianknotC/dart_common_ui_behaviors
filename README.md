@@ -230,3 +230,13 @@ final scheduledResult2 = futureList.addSchedule(task2);
 
 
 
+
+
+[autoupdate-test]: ./test/io.cmd.test.dart
+[bhaviors-test]: ./test/io.codec.test.dart
+[dbouncer-test]: ./test/io.glob.test.dart
+[schedule-test]: ./test/io.logger.test.dart
+[group_aware-test]: ./test/fileio.test.dart
+
+
+
