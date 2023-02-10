@@ -1,17 +1,19 @@
 __outdated not recommended__
 
-滙集一些常用的 reactive 功能，命名以後綴 Aware 作為修飾，reactive 的部份目前以 mobx 實作, dart 版本太舊，待更新 
-- scrollAware
-- progressAware
-- pickedAware
-- groupAware
-- schedulers
-- debouncer
-- notifiers
+於 [flutter 2019 web portfolio][portfolio] 中抽出的 package, 滙集一些常用的 reactive 功能，命名以後綴 Aware 作為修飾，reactive 的部份目前以 mobx 實作, dart 版本太舊，待更新 
 
 ## todos
 - [V] 更新 dart sdk
 - [ ] 更新單元測試
+
+## 目錄
+- [ScrollAccAware](#ScrollAccAware)
+- [SingleProgressAware](#SingleProgressAware)
+- [PickedAware](#PickedAware)
+- [AutoUpdateScheduler](#AutoUpdateScheduler)
+- [ScheduledFutureList](#ScheduledFutureList)
+- debouncer
+- notifiers
 
 ### ScrollAccAware
 偵測 ScrollController 變化
@@ -237,6 +239,7 @@ final scheduledResult2 = futureList.addSchedule(task2);
 [dbouncer-test]: ./test/io.glob.test.dart
 [schedule-test]: ./test/io.logger.test.dart
 [group_aware-test]: ./test/fileio.test.dart
+[portfolio]: https://gordianknotC.github.io/portfolio2019Fl
 
 
 
