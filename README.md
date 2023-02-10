@@ -1,6 +1,6 @@
 __outdated not recommended__
 
-於 [flutter 2019 web portfolio][portfolio] 中抽出的 package, 滙集一些常用的 reactive 功能，命名以後綴 Aware 作為修飾，reactive 的部份目前以 mobx 實作, dart 版本太舊，待更新 
+滙集一些常用的 reactive 功能，命名以後綴 Aware 作為修飾，reactive 的部份目前以 mobx 實作, dart 版本太舊，待更新 
 
 ## todos
 - [V] 更新 dart sdk
