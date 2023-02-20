@@ -30,15 +30,15 @@ void main() {
       );
     });
 
-    test('execute ten tasks simutaneously', () async {
-      final interval = 60;
+    test('execute ten tasks simultaneously expect execution peak being spread', () async {
+      final interval_per_task = 60;
       final tagname = 'testB';
-      final tests = 20;
+      final task_numbers = 20;
       final a = DateTimeExtension.envNow();
-      for (var i = 0; i < tests; ++i) {
+      for (var i = 0; i < task_numbers; ++i) {
         final result = '$tagname result $i';
         H.testAsyncSchedule<String>(
-          interval: interval,
+          interval: interval_per_task,
           tagname: tagname,
           idx: i,
           result: result,
@@ -50,7 +50,7 @@ void main() {
       await H.waitPendingAsyncTests();
       final b = DateTimeExtension.envNow();
 
-      expect(b.difference(a).inMilliseconds, greaterThan(tests * interval));
+      expect(b.difference(a).inMilliseconds, greaterThan(task_numbers * interval_per_task));
     });
 
     /// todo: test for 驗證回傳資料
