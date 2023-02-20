@@ -20,9 +20,9 @@ class ScheduledTask<T>{
 	final Completer<T> completer;
 	bool							  _proceedInQueue =  false;
 	bool						 get proceedInQueue => _proceedInQueue;
-	ScheduledTask<T>? get nextSchedule => (index == _schedules.length - 1 ? null : _schedules[index + 1]) as ScheduledTask<T>;
-	ScheduledTask<T>? get prevSchedule => (index == 0 ? null : _schedules[index - 1]) as ScheduledTask<T>;
-	ScheduledTask<T>? get currentFlag  => (index == 0 ? null : _schedules[index - 1]) as ScheduledTask<T>;
+	ScheduledTask<T>? get nextSchedule => (index == _schedules.length - 1 ? null : _schedules[index + 1]) as ScheduledTask<T>?;
+	ScheduledTask<T>? get prevSchedule => (index == 0 ? null : _schedules[index - 1]) as ScheduledTask<T>?;
+	ScheduledTask<T>? get currentFlag  => (index == 0 ? null : _schedules[index - 1]) as ScheduledTask<T>?;
 	int 						 get index 				=> _schedules.indexOf(this);
 	bool						 get finished     => completer.isCompleted;
 

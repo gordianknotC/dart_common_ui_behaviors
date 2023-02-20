@@ -4,10 +4,10 @@ import 'package:ui_common_behaviors/src/schedulers/debouncer_scheduler.dart';
 
 extension DateTimeExtension on DateTime {
   /// event dump 的時間
-  static DateTime? _pseudoEventTime;
+  static DateTime? _pseudoEventTime = DateTime.now();
 
   /// app 初始化的時間
-  static DateTime? _appInitialTime;
+  static DateTime? _appInitialTime = DateTime.now();
 
   ///
   static void setAppInitialTime(DateTime data) {

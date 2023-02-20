@@ -7,7 +7,7 @@ class DebounceCallState{
   final String name;
   dynamic extra;
   bool called = false;
-  void Function() _cb;
+  final void Function() _cb;
 
   DebounceCallState(this._cb, this.name, {this.extra = ''});
   void call(){
@@ -127,8 +127,8 @@ class DebouncerStack{
 /// tested:
 class Debouncer {
   int milliseconds;
+  Timer? _timer;
   late bool active;
-  late Timer? _timer;
   late void Function()? action;
 
   Debouncer({ required this.milliseconds }){

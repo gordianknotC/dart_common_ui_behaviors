@@ -224,34 +224,18 @@ class ScheduleFutureList {
 #### Example
 ```dart
 void main(){
-  late ScheduledFutureList futureList;
-  late ScheduleTestHelper H;
-  group('ScheduledTask tests', () {
-    setUpAll(() {
-      futureList = ScheduledFutureList.singleton();
-      H = ScheduleTestHelper(futureList);
-    });
-    test('execute ten tasks simultaneously expect execution peak being spread', () async {
-      final interval_per_task = 60;
-      final tagname = 'testB';
-      final task_numbers = 20;
-      final a = DateTimeExtension.envNow();
-      for (var i = 0; i < task_numbers; ++i) {
-        final result = '$tagname result $i';
-        H.testAsyncSchedule<String>(
-            interval: interval_per_task,
-            tagname: tagname,
-            idx: i,
-            result: result,
-            action: () {
-              return result;
-            }
-        );
-      }
-      await H.waitPendingAsyncTests();
-      final b = DateTimeExtension.envNow();
-      expect(b.difference(a).inMilliseconds, greaterThan(task_numbers * interval_per_task));
-    });
+  test('add two schedule', () async {
+    final interval = 60;
+    final futureList = ScheduledFutureList.singleton();
+    final task1 = ScheduledTask<T>(tagName: tagname, interval: interval, action: action);
+    final task2 = ScheduledTask<T>(tagName: tagname, interval: interval, action: action);
+    final scheduledResult1 = futureList.addSchedule(task1);
+    final scheduledResult2 = futureList.addSchedule(task2);
+    final l = DateTime.now();
+    await scheduledResult1.result;
+    await scheduledResult2.result;
+    final r = DateTime.now();
+    expect(r.difference(l).inMilliseconds, greaterThan(interval * 2));
   });
 }
 ```
