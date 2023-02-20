@@ -205,7 +205,7 @@ scheduler.scheduleUpdate()
 ///  因使用 CPU 線程會需要額外的操作（自建獨立環境 isolate)，
 ///  當同時處理太多小資料，使CPU load time 太重高
 ///  這時就可以用 [ScheduledFutureList]
-///  
+///  目的是為了讓 load time Peak 拉平  
 ```
 
 > source
